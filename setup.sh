@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-DOMAIN_NAME=""
-EMAIL_ADMIN=""
+DOMAIN_NAME="${DOMAIN_NAME:-}"
+EMAIL_ADMIN="${EMAIL_ADMIN:-}"
 CERTBOT_CONF_PATH="${CERTBOT_CONF_PATH:-./certbot/conf}"
 CERTBOT_WWW_PATH="${CERTBOT_WWW_PATH:-./certbot/www}"
 

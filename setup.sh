@@ -37,10 +37,12 @@ sed -i "s/{_APP_DOMAIN_}/${DOMAIN_NAME}/g" nginx/app.conf
 echo "Starting nginx"
 docker-compose up --force-recreate -d nginx
 
-echo "Deleting dummy certificates"
-rm -rf ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}
-rm -Rf ${CERTBOT_CONF_PATH}/archive/${DOMAIN_NAME} 
-rm -Rf ${CERTBOT_CONF_PATH}/renewal/${DOMAIN_NAME}
+echo "Bucking up self signed certificates"
+mv ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME} ${CERTBOT_CONF_PATH}/live/selfsigned
+
+echo "Cleaning cert bot certificates"
+rm -rf ${CERTBOT_CONF_PATH}/archive/${DOMAIN_NAME}/* 
+rm -rf ${CERTBOT_CONF_PATH}/renewal/${DOMAIN_NAME}/*
 
 echo "Requesting Certificates"
 docker-compose run --rm --entrypoint "certbot certonly --webroot \
@@ -50,6 +52,15 @@ docker-compose run --rm --entrypoint "certbot certonly --webroot \
     --agree-tos \
     --force-renewal" \
     certbot
+
+if [ ! -f ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}/privkey.pem ] || [ ! -f ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}/fullchain.pem ]
+then
+  echo ""
+  echo "[ Error ]Certbot certificate request failed"
+  echo "Using selfsigned certificates"
+  rm -rf ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}
+  ln -s ${CERTBOT_CONF_PATH}/live/selfsigned ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}
+fi 
 
 echo "Reloading nginx"
 docker-compose exec nginx nginx -s reload

@@ -1,6 +1,6 @@
 # Wordpress Docker
 Configure a wordpress environment automatically with SSL.
-SSL certificates are created using lets encrypt and certbot, if certbot fails then selfsigned certificates will be use instead.
+Certificates are created using lets encrypt and certbot, if certbot fails then selfsigned certificates will be use instead.
 
 ## Requirements
 - git

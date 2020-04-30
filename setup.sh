@@ -37,6 +37,11 @@ sed -i "s/{_APP_DOMAIN_}/${DOMAIN_NAME}/g" nginx/app.conf
 echo "Starting nginx"
 docker-compose up --force-recreate -d nginx
 
+echo "Deleting dummy certificates"
+rm -rf ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}
+rm -Rf ${CERTBOT_CONF_PATH}/archive/${DOMAIN_NAME} 
+rm -Rf ${CERTBOT_CONF_PATH}/renewal/${DOMAIN_NAME}
+
 echo "Requesting Certificates"
 docker-compose run --rm --entrypoint "certbot certonly --webroot \
     -w /var/www/certbot \

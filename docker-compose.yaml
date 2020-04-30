@@ -2,6 +2,8 @@ version: '3'
 services:
   nginx:
     image: nginx:1.15-alpine
+    depends_on:
+      - wordpress    
     ports:
       - "80:80"
       - "443:443"
@@ -28,9 +30,7 @@ services:
   wordpress:
       image: wordpress
       depends_on:
-        - nginx
-        - mariadb
-        
+        - mariadb        
       links:
       - mariadb:mysql
       environment:

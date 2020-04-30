@@ -38,7 +38,7 @@ echo "Starting nginx"
 docker-compose up --force-recreate -d nginx
 
 echo "Bucking up self signed certificates"
-mv ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME} ${CERTBOT_CONF_PATH}/live/selfsigned
+mv ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME} ${CERTBOT_CONF_PATH}/live/selfsigned-${DOMAIN_NAME}
 
 echo "Cleaning cert bot certificates"
 rm -rf ${CERTBOT_CONF_PATH}/archive/${DOMAIN_NAME}/* 
@@ -59,7 +59,7 @@ then
   echo "[ Error ]Certbot certificate request failed"
   echo "Using selfsigned certificates"
   rm -rf ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}
-  ln -s ${CERTBOT_CONF_PATH}/live/selfsigned ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}
+  ln -s ${CERTBOT_CONF_PATH}/live/selfsigned-${DOMAIN_NAME} ${CERTBOT_CONF_PATH}/live/${DOMAIN_NAME}
 fi 
 
 echo "Reloading nginx"

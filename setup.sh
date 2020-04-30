@@ -12,11 +12,11 @@ openssl version > /dev/null
 curl --version  > /dev/null
 echo "[ Ok ]"
 
-[ -z DOMAIN_NAME ] && echo "[ Error ] DOMAIN_NAME environment variable is not defined." && exit 1
-[ -z EMAIL_ADMIN ] && echo "[ Error ] EMAIL_ADMIN environment variable is not defined." && exit 2
+[ -z ${DOMAIN_NAME} ] && echo "[ Error ] DOMAIN_NAME environment variable is not defined." && exit 1
+[ -z ${EMAIL_ADMIN} ] && echo "[ Error ] EMAIL_ADMIN environment variable is not defined." && exit 2
 
-[ -d CERTBOT_CONF_PATH ] || mkdir -p ${CERTBOT_CONF_PATH}
-[ -d CERTBOT_WWW_PATH ]  || mkdir -p ${CERTBOT_WWW_PATH}
+[ -d ${CERTBOT_CONF_PATH} ] || mkdir -p ${CERTBOT_CONF_PATH}
+[ -d ${CERTBOT_WWW_PATH} ]  || mkdir -p ${CERTBOT_WWW_PATH}
 
 if [ ! -f "${CERTBOT_CONF_PATH}/options-ssl-nginx.conf" ] || [ ! -f "${CERTBOT_CONF_PATH}/ssl-dhparams.pem" ]; then
   echo "[ Info ] Downloading TLS config "
